@@ -6,6 +6,7 @@ import Subject from './components/Subject';
 import Control from './components/Control';
 import CreateContent from './components/CreateContent';
 import UpdateContent from './components/UpdateContent';
+import { FirebaseApp } from '@firebase/app';
 
 /*
 function App() {
@@ -26,7 +27,7 @@ class App extends Component {
     this.state = {
       mode:"welcome",
       selected_content_id:2,
-      subject : {title:"WEB", sub:"world wide web!"},
+      subject : {title:"하루 일기", sub:"당신의 하루를 기록하세요."},
       welcome : {title:"welcome", desc:"Hello, React!"},
       contents: [ // 내용이 많아서 배열 활용[]
         {id:1, title:"HTML", desc:"HTML is for information"},
@@ -116,18 +117,15 @@ class App extends Component {
           onChangePage={function(){
             this.setState({mode:"welcome"});
           }.bind(this)}
-        >
-        </Subject>
-        <TOC 
-          onChangePage={function(id){
+          onChangeMode={function(_mode){
             this.setState({
-              mode:"read",
-              selected_content_id:Number(id)
+              mode:_mode
             });
           }.bind(this)}
-          data={this.state.contents}
-        ></TOC>
-        <Control onChangeMode={function(_mode){
+        >
+        </Subject>
+        {/* <Control 
+          onChangeMode={function(_mode){
           if(_mode === "delete"){
             // 확인을 누르면 true가 됨
             if(window.confirm("really??")){
@@ -153,7 +151,16 @@ class App extends Component {
             });
           }
         }.bind(this)}>
-        </Control>
+        </Control> */}
+        <TOC 
+          onChangePage={function(id){
+            this.setState({
+              mode:"read",
+              selected_content_id:Number(id)
+            });
+          }.bind(this)}
+          data={this.state.contents}
+        ></TOC>
         {this.getContent()}
       </div>
     );

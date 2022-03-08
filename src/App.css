@@ -1,0 +1,18 @@
+.header-wrap {
+    background-color: antiquewhite;
+}
+
+.logo {
+    float: left;
+    font-size: 25px;
+}
+
+.writebtn {
+    float: right;
+    font-size: 25px;
+}
+
+.sub {
+    color: gray;
+    clear: both;
+}
