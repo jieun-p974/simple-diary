@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-// firebase로 받아온거 여기서 사용
-class TOC extends Component {
+
+// firebase로 저장해둔 거 리스트 받아온거 여기서 사용
+class DiaryList extends Component {
     render(){
       // 배열 lists에 새로운 data의 길이 만큼 반복하면서 값을 추가
       var lists = [];
@@ -34,4 +35,4 @@ class TOC extends Component {
     }
 }
 
-export default TOC;
+export default DiaryList;

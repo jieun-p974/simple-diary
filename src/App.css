@@ -1,6 +1,22 @@
-.header-wrap {
-    background-color: antiquewhite;
+a {
+    text-decoration: none;
+    /* 링크의 밑줄 제거 */
+    color: inherit;
+    /* 링크의 색상 제거 */
 }
+
+.App {
+    background-color: #e6dbac;
+    padding: 20px;
+}
+
+.contents {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.header-wrap {}
 
 .logo {
     float: left;
@@ -15,4 +31,21 @@
 .sub {
     color: gray;
     clear: both;
+}
+
+.pentosquare {
+    color: #e6dbac;
+}
+
+.pentosquare:hover {
+    color: #e7c27d;
+}
+
+.diary-list {
+    margin-top: 5px;
+    border-top: solid 1px #e7c27d;
+}
+
+.diary {
+    list-style: none;
 }

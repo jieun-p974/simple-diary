@@ -27,8 +27,8 @@ class App extends Component {
     this.state = {
       mode:"welcome",
       selected_content_id:2,
-      subject : {title:"하루 일기", sub:"당신의 하루를 기록하세요."},
-      welcome : {title:"welcome", desc:"Hello, React!"},
+      subject : {title:"{Daily Diary}", sub:"오늘은 어떤 일이 있었나요?"},
+      welcome : {title:"welcome", desc:"리스트 아무것도 없으면 이거 출력"},
       contents: [ // 내용이 많아서 배열 활용[]
         {id:1, title:"HTML", desc:"HTML is for information"},
         {id:2, title:"CSS", desc:"CSS is for design"},
@@ -47,6 +47,7 @@ class App extends Component {
         i = i+1;
       }
   }
+
   // 코드가 너무 복잡해서 새로운 함수를 생성해서 랜더 코드를 가볍게
   getContent(){
     var _title,_desc, _article = null;
@@ -54,23 +55,15 @@ class App extends Component {
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
       _article = <ReadContent title={_title} desc={_desc}></ReadContent>
-    } else if(this.state.mode === 'read'){
+    } 
+    else if(this.state.mode === 'read'){
       var _content = this.getReadContent();
       _article = <ReadContent title={_content.title} desc={_content.desc}></ReadContent>
-    } else if(this.state.mode =="create"){
+    } 
+    else if(this.state.mode =="create"){
       _article = <CreateContent onSubmit={function(_title,_desc){
         // this.state.contents 를 통해서 새로운 컨텐트 값을 추가
         this.max_content_id = this.max_content_id + 1;
-        // 리액트가 contents의 값이 변한 것을 눈치 채지 못함
-        // push는 오리지널 데이터를 건들이는 것이라 사용X
-        // this.state.contents.push(
-        //   {id:this.max_content_id, title:_title, desc:_desc}
-        // );
-        // 방법1 concat을 사용함으로써 _contents 변수에 들어있는 값으로 교체되는 것
-        // var _contents = this.state.contents.concat(
-        //   {id:this.max_content_id, title:_title, desc:_desc}
-        // );
-        // 방법2 배열을 복제하면 push사용 가능
         var _contents = Array.from(this.state.contents);
         _contents.push({id:this.max_content_id, title:_title, desc:_desc});
         // setState를 통해 알려줘야함
@@ -110,20 +103,23 @@ class App extends Component {
     console.log("App render");
     return(
       <div className='App'>
-        <Subject 
-          title={this.state.subject.title} 
-          sub={this.state.subject.sub}
-          // 이벤트 생성
-          onChangePage={function(){
-            this.setState({mode:"welcome"});
-          }.bind(this)}
-          onChangeMode={function(_mode){
-            this.setState({
-              mode:_mode
-            });
-          }.bind(this)}
-        >
-        </Subject>
+        <div className='contents'>
+          <Subject 
+            title={this.state.subject.title} 
+            sub={this.state.subject.sub}
+            // 이벤트 생성
+            onChangePage={function(){
+              this.setState({mode:"welcome"});
+            }.bind(this)}
+            onChangeMode={function(_mode){
+              this.setState({
+                mode:_mode
+              });
+            }.bind(this)}
+          >
+          </Subject>
+          {this.getContent()}
+        </div>
         {/* <Control 
           onChangeMode={function(_mode){
           if(_mode === "delete"){
@@ -161,7 +157,7 @@ class App extends Component {
           }.bind(this)}
           data={this.state.contents}
         ></TOC>
-        {this.getContent()}
+        ↑파이어베이스에서 불러온 메모 리스트
       </div>
     );
   }
