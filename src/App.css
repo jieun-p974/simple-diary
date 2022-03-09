@@ -41,6 +41,10 @@ a {
     color: #e7c27d;
 }
 
+.pencil .eraser {
+    color: #e6dbac;
+}
+
 .diary-list {
     margin-top: 5px;
     border-top: solid 1px #e7c27d;

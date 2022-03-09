@@ -6,7 +6,6 @@ import Subject from './components/Subject';
 import Control from './components/Control';
 import CreateContent from './components/CreateContent';
 import UpdateContent from './components/UpdateContent';
-import { FirebaseApp } from '@firebase/app';
 
 /*
 function App() {
@@ -17,6 +16,7 @@ function App() {
   );
 }
 */
+
 
 class App extends Component {
   // render 보다 먼저 실행되면서 컴포넌트를 초기화 시켜주고 싶은 코드는 constructor안에다가 코드 작성
@@ -33,7 +33,8 @@ class App extends Component {
         {id:1, title:"HTML", desc:"HTML is for information"},
         {id:2, title:"CSS", desc:"CSS is for design"},
         {id:3, title:"JavaScript", desc:"JavaScript is for interaction"}
-      ]
+      ],
+      firedata: ""
     }
   }
   getReadContent(){
@@ -98,12 +99,14 @@ class App extends Component {
     return _article;
   }
 
+
   // props나 state가 바뀌면 해당되는 render함수가 호출됨(화면 재호출)
   render() {
     console.log("App render");
     return(
       <div className='App'>
         <div className='contents'>
+          {this.state.firedata}
           <Subject 
             title={this.state.subject.title} 
             sub={this.state.subject.sub}

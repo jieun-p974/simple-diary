@@ -15,7 +15,6 @@ class CreateContent extends Component {
             }.bind(this)}
           >
             <p><input type="text" name="title" placeholder="title"></input></p>
-            <p><input type="file"></input></p>
             <p><textarea name="desc" placeholder="description"></textarea></p>
             <p><input type="submit"></input></p>
           </form>

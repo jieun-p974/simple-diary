@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import DiaryList from "./DiaryList";
 
 class Subject extends Component {
     render(){ // 클래스 안에 소속되는 함수는 function 생략
@@ -25,7 +26,8 @@ class Subject extends Component {
             {this.props.sub}
           </div>
           <div className="diary-list">
-              <ul><li>여기에 일기리스트들 가져옴</li></ul>
+              <DiaryList>
+              </DiaryList>
           </div>
         </header>
       );
