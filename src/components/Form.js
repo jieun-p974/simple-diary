@@ -1,7 +1,7 @@
 // input 버튼이 있는 component
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled, { css } from 'styled-components';
 
 const DiaryForm = styled.div`
@@ -35,7 +35,8 @@ const CreateButton =styled.button`
     }
 `
 
-const Form = () => {
+const Form = ({onCreate}) => {
+    const contentInput = useRef();
     const [state, setState] = useState({
         content:"",
         emotion: "😀",
@@ -48,7 +49,18 @@ const Form = () => {
     }
     const handleSubmit = () =>{
         console.log(state);
+        // 2글자 미만이면 내용입력칸에 focus
+        if(state.content.length < 2){
+            contentInput.current.focus();
+            alert("내용을 3글자 이상 입력해주세요!")
+            return;
+        }
+        onCreate(state.content, state.emotion);
         alert("저장성공");
+        setState({
+            content: "",
+            emotion: "😀"
+        });
     }
     return(
         <DiaryForm>
@@ -64,6 +76,7 @@ const Form = () => {
                 <option value={"angry"}>😠</option>
             </EmotionSelect>
             <InputeField 
+                ref = {contentInput}
                 name='content'
                 value={state.content} 
                 onChange={handleChangeState}

@@ -11,7 +11,7 @@ const Diary_Template = styled.div`
 `
 const Title = styled.div`
     padding: 2rem;
-    font-size: 2.5rem;
+    font-size: 2rem;
     text-align: ceter;
     background: #e3c565;
     color: white;
@@ -29,7 +29,7 @@ const DiaryTemplate = ({form, children}) => {
     return(
         <Diary_Template>
             <Title>
-                일기 제목
+                오늘은 어떤 일이 있었나요?
             </Title>    
             <FontWrap>
                 {form}
