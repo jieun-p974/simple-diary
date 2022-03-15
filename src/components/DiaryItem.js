@@ -1,13 +1,12 @@
 import React, {Component} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEraser } from "@fortawesome/free-solid-svg-icons";
+import { faEraser,faPencil } from "@fortawesome/free-solid-svg-icons";
 import styled, { css } from 'styled-components';
 
 const DiaryItems = styled.div`
     padding: 1rem;
     display: flex;
     align-items: center; /* 가운데 세로 정렬 */
-    cursor: pointer;
     transition: all 0.15s;
     user-select: none; /* 드레그 금지 */
     &:hover{
@@ -22,17 +21,33 @@ const Info = styled.div`
     border: #e3c565 solid 1px;
     padding: 1rem;
 `
-const DiaryRemove = styled.div`
+const Buttons = styled.div`
+    text-align:center;
+    display: inline-flex;
+    width: 100%;
+    justify-content:space-around;
+`
+const DiaryRemove = styled.button`
     margin-right: 1rem;
     color: #e3c565;
-    font-weight: 600;
-    opacity: 0;
+    background-color:transparent;
+    border: none;
+    cursor: pointer;
+
+`
+const DiaryUpdate = styled.button`
+    margin-right: 1rem;
+    color: #e3c565;
+    background-color:transparent;
+    border: none;
+    cursor: pointer;
+
 `
 const Text = styled.div`
+    border-top: solid 1px #e3c565;
     word-break: break-all; /* 글자단위로 자름 */
 `
-
-const DiaryItem = ({content, created_date, emotion, id}) =>{
+const DiaryItem = ({onDelete, content, created_date, emotion, id}) =>{
     return(
         <DiaryItems>
             <Info>
@@ -45,6 +60,20 @@ const DiaryItem = ({content, created_date, emotion, id}) =>{
                 </span>
                 <br/>
                 <Text>{content}</Text>
+                <br/>
+                <Buttons>
+                    <DiaryRemove onClick={()=>{
+                        if(window.confirm(`${id+1}번째 일기를 삭제하시겠습니까?`)){
+                            onDelete(id);
+                        }
+                    }}
+                    >
+                        <FontAwesomeIcon icon={faEraser} size="2x" />
+                    </DiaryRemove>
+                    <DiaryUpdate>
+                        < FontAwesomeIcon icon={faPencil} size="2x" />
+                    </DiaryUpdate>
+                </Buttons>
             </Info>
         </DiaryItems>
     )

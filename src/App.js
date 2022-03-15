@@ -27,7 +27,7 @@ import Form from './components/Form';
 // ];
 
 function App() {
-  const [date, setDate] = useState([]);
+  const [data, setData] = useState([]);
   const dateId = useRef(0);
   // 일기 생성 기능 내용이랑 감정 받음
   const onCreate = (content, emotion) => {
@@ -42,13 +42,22 @@ function App() {
     };
     dateId.current += 1;
     // 기존의 데이터는 date, 새로 추가된 데이터는 newThings
-    setDate([newThings, ...date]);
+    setData([newThings, ...data]);
   }
+
+  const onDelete = (targetedId) => {
+    console.log(`${targetedId} 삭제`);
+    // filter로 제거할 리스트의 targetedId외의 요소들로 리스트 새로 생성
+    const newDiaryList = data.filter((it)=>it.id !== targetedId);
+    console.log(newDiaryList);
+    setData(newDiaryList);
+  }
+
   return(
     <DiaryTemplate form={
       <Form onCreate={onCreate} />
     }>
-      <DiaryList diarys={date}/>
+      <DiaryList diarys={data} onDelete={onDelete}/>
     </DiaryTemplate>
   )
 }

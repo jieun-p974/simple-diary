@@ -69,11 +69,11 @@ const Form = ({onCreate}) => {
                 value={state.emotion}
                 onChange={handleChangeState}
             >
-                <option value={"happy"}>😀</option>
-                <option value={"smile"}>🙂</option>
-                <option value={"fine"}>😐</option>
-                <option value={"sad"}>😢</option>
-                <option value={"angry"}>😠</option>
+                <option value={"😀"}>😀</option>
+                <option value={"🙂"}>🙂</option>
+                <option value={"😐"}>😐</option>
+                <option value={"😢"}>😢</option>
+                <option value={"😠"}>😠</option>
             </EmotionSelect>
             <InputeField 
                 ref = {contentInput}

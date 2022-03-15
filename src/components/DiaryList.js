@@ -6,13 +6,13 @@ const DiaryLists = styled.div`
   padding: 1rem;
 `
 
-const DiaryList = ({diarys}) => {
+const DiaryList = ({onDelete, diarys}) => {
   return(
     <DiaryLists>
       <h4>{diarys.length}개의 일기가 있습니다.</h4>
       <div>
         {diarys.map((it)=>(
-          <DiaryItem key = {it.id} {...it} />
+          <DiaryItem key = {it.id} {...it} onDelete={onDelete} />
         ))}
       </div>
     </DiaryLists>
