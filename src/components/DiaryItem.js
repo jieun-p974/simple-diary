@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {useRef, useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEraser,faPencil } from "@fortawesome/free-solid-svg-icons";
 import styled, { css } from 'styled-components';
@@ -29,7 +29,6 @@ const Buttons = styled.div`
 `
 const DiaryRemove = styled.button`
     margin-right: 1rem;
-    color: #e3c565;
     background-color:transparent;
     border: none;
     cursor: pointer;
@@ -37,7 +36,6 @@ const DiaryRemove = styled.button`
 `
 const DiaryUpdate = styled.button`
     margin-right: 1rem;
-    color: #e3c565;
     background-color:transparent;
     border: none;
     cursor: pointer;
@@ -47,7 +45,30 @@ const Text = styled.div`
     border-top: solid 1px #e3c565;
     word-break: break-all; /* 글자단위로 자름 */
 `
-const DiaryItem = ({onDelete, content, created_date, emotion, id}) =>{
+const DiaryItem = ({onUpdate, onDelete, content, created_date, emotion, id}) =>{
+    const [isUpdate, setIsUpdate] = useState(false); //초기값 false
+    const toggle = () => setIsUpdate(!isUpdate);
+    const [localContent, setLocalContent] = useState(content); // 기존의 content 값을 초기값으로
+    const localContentInput = useRef();
+    // 삭제 함수
+    const handleRemove = () => {
+        if(window.confirm(`${id+1}번째 일기를 삭제하시겠습니까?`)){
+            onDelete(id);
+        }
+    }
+    // 수정함수
+    const handleUpdate = () => {
+        if (localContent.length < 2){
+            // 수정하는 글 길이가 짧으면 다시 포커스
+            localContentInput.current.focuse();
+            alert("일기 내용이 너무 짧아요!");
+            return;
+        }
+        if (window.confirm(`{id + 1}번째 일기를 수정하시겠습니까?`)){
+            onUpdate(id, localContent);
+            toggle();
+        }
+    };
     return(
         <DiaryItems>
             <Info>
@@ -59,21 +80,41 @@ const DiaryItem = ({onDelete, content, created_date, emotion, id}) =>{
                     기분 : {emotion}
                 </span>
                 <br/>
-                <Text>{content}</Text>
+                <Text>
+                    {/* 수정 모드인지 아닌지 */}
+                    {isUpdate?(
+                        // 수정모드
+                        <textarea>
+                            ref={localContentInput}
+                            value={localContent}
+                            onChange={(e)=>setLocalContent(e.target.value)}
+                        </textarea>
+                    ):(
+                        // 읽기모드
+                        {content}
+                    )}
+                    
+                </Text>
                 <br/>
-                <Buttons>
-                    <DiaryRemove onClick={()=>{
-                        if(window.confirm(`${id+1}번째 일기를 삭제하시겠습니까?`)){
-                            onDelete(id);
-                        }
-                    }}
-                    >
-                        <FontAwesomeIcon icon={faEraser} size="2x" />
-                    </DiaryRemove>
-                    <DiaryUpdate>
-                        < FontAwesomeIcon icon={faPencil} size="2x" />
-                    </DiaryUpdate>
-                </Buttons>
+                <>
+                    {isUpdate?(
+                                <Buttons>
+                                    <button onClick={handleUpdate}>
+                                        수정완료<FontAwesomeIcon icon={faPencil} />
+                                    </button>
+                                </Buttons>
+                            ):(
+                                // 수정/삭제 버튼 보이게
+                                <Buttons>
+                                    <DiaryUpdate onClick={toggle}>
+                                        수정<FontAwesomeIcon icon={faPencil} />
+                                    </DiaryUpdate>
+                                    <DiaryRemove onClick={handleRemove}>
+                                        삭제<FontAwesomeIcon icon={faEraser} />
+                                    </DiaryRemove>
+                                </Buttons>
+                        )}
+                </>
             </Info>
         </DiaryItems>
     )

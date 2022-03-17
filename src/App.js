@@ -4,29 +4,8 @@ import DiaryList from './components/DiaryList';
 import DiaryTemplate from './components/DiaryTemplate';
 import Form from './components/Form';
 
-// state 설정
-// const diaryList = [
-//     {
-//       id:1,
-//       content: "hello",
-//       emotion: "😢",
-//       created_date:new Date().getTime(),
-//     },
-//     {
-//       id:2,
-//       content: "happy day",
-//       emotion: "😀",
-//       created_date:new Date().getTime(),
-//     },
-//     {
-//       id:3,
-//       content: "angry",
-//       emotion: "😠",
-//       created_date:new Date().getTime(),
-//     },
-// ];
 
-function App() {
+const App = () => {
   const [data, setData] = useState([]);
   const dateId = useRef(0);
   // 일기 생성 기능 내용이랑 감정 받음
@@ -44,21 +23,31 @@ function App() {
     // 기존의 데이터는 date, 새로 추가된 데이터는 newThings
     setData([newThings, ...data]);
   }
-
+  // 수정하기, id값을 받고 해당 id의 글의 content, emotion수정
+  const onUpdate = (targetedId, newContent) => {
+    setData(
+      // targetedId랑 it.id가 일치하면 newContent 아니면 그대로
+      data.map((it)=>
+        it.id === targetedId ? {...it, content:newContent} :it
+      )
+    );
+  }
+  // 삭제하기, 선택한 id 값의 배열을 삭제
   const onDelete = (targetedId) => {
     console.log(`${targetedId} 삭제`);
     // filter로 제거할 리스트의 targetedId외의 요소들로 리스트 새로 생성
     const newDiaryList = data.filter((it)=>it.id !== targetedId);
-    console.log(newDiaryList);
     setData(newDiaryList);
   }
 
   return(
-    <DiaryTemplate form={
-      <Form onCreate={onCreate} />
-    }>
-      <DiaryList diarys={data} onDelete={onDelete}/>
-    </DiaryTemplate>
+    <div className='App'>
+      <DiaryTemplate form={
+        <Form onCreate={onCreate} />
+      }>
+        <DiaryList diarys={data} onUpdate={onUpdate} onDelete={onDelete}/>
+      </DiaryTemplate>
+    </div>
   )
 }
 
