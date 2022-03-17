@@ -23,15 +23,17 @@ const App = () => {
     // 기존의 데이터는 date, 새로 추가된 데이터는 newThings
     setData([newThings, ...data]);
   }
+  // 오류 발생
   // 수정하기, id값을 받고 해당 id의 글의 content, emotion수정
-  const onUpdate = (targetedId, newContent) => {
-    setData(
-      // targetedId랑 it.id가 일치하면 newContent 아니면 그대로
-      data.map((it)=>
-        it.id === targetedId ? {...it, content:newContent} :it
-      )
-    );
-  }
+  // const onUpdate = (targetedId, newContent) => {
+  //   setData(
+  //     // targetedId랑 it.id가 일치하면 newContent 아니면 그대로
+  //     data.map((it)=>
+  //       it.id === targetedId ? {...it, content:newContent} :it
+  //     )
+  //   );
+  // }
+
   // 삭제하기, 선택한 id 값의 배열을 삭제
   const onDelete = (targetedId) => {
     console.log(`${targetedId} 삭제`);
@@ -45,7 +47,7 @@ const App = () => {
       <DiaryTemplate form={
         <Form onCreate={onCreate} />
       }>
-        <DiaryList diarys={data} onUpdate={onUpdate} onDelete={onDelete}/>
+        <DiaryList diarys={data} onDelete={onDelete}/>
       </DiaryTemplate>
     </div>
   )

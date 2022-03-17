@@ -46,10 +46,11 @@ const Text = styled.div`
     word-break: break-all; /* 글자단위로 자름 */
 `
 const DiaryItem = ({onUpdate, onDelete, content, created_date, emotion, id}) =>{
-    const [isUpdate, setIsUpdate] = useState(false); //초기값 false
-    const toggle = () => setIsUpdate(!isUpdate);
-    const [localContent, setLocalContent] = useState(content); // 기존의 content 값을 초기값으로
-    const localContentInput = useRef();
+    // const [isUpdate, setIsUpdate] = useState(false); //초기값 false
+    // const toggle = () => setIsUpdate(!isUpdate);
+    // const [localContent, setLocalContent] = useState(content); // 기존의 content 값을 초기값으로
+    // const localContentInput = useRef();
+
     // 삭제 함수
     const handleRemove = () => {
         if(window.confirm(`${id+1}번째 일기를 삭제하시겠습니까?`)){
@@ -57,18 +58,18 @@ const DiaryItem = ({onUpdate, onDelete, content, created_date, emotion, id}) =>{
         }
     }
     // 수정함수
-    const handleUpdate = () => {
-        if (localContent.length < 2){
-            // 수정하는 글 길이가 짧으면 다시 포커스
-            localContentInput.current.focuse();
-            alert("일기 내용이 너무 짧아요!");
-            return;
-        }
-        if (window.confirm(`{id + 1}번째 일기를 수정하시겠습니까?`)){
-            onUpdate(id, localContent);
-            toggle();
-        }
-    };
+    // const handleUpdate = () => {
+    //     if (localContent.length < 2){
+    //         // 수정하는 글 길이가 짧으면 다시 포커스
+    //         localContentInput.current.focuse();
+    //         alert("일기 내용이 너무 짧아요!");
+    //         return;
+    //     }
+    //     if (window.confirm(`{id + 1}번째 일기를 수정하시겠습니까?`)){
+    //         onUpdate(id, localContent);
+    //         toggle();
+    //     }
+    // };
     return(
         <DiaryItems>
             <Info>
@@ -82,7 +83,7 @@ const DiaryItem = ({onUpdate, onDelete, content, created_date, emotion, id}) =>{
                 <br/>
                 <Text>
                     {/* 수정 모드인지 아닌지 */}
-                    {isUpdate?(
+                    {/* {isUpdate?(
                         // 수정모드
                         <textarea>
                             ref={localContentInput}
@@ -92,11 +93,11 @@ const DiaryItem = ({onUpdate, onDelete, content, created_date, emotion, id}) =>{
                     ):(
                         // 읽기모드
                         {content}
-                    )}
-                    
+                    )} */}
+                    {content}
                 </Text>
                 <br/>
-                <>
+                {/* <>
                     {isUpdate?(
                                 <Buttons>
                                     <button onClick={handleUpdate}>
@@ -114,7 +115,15 @@ const DiaryItem = ({onUpdate, onDelete, content, created_date, emotion, id}) =>{
                                     </DiaryRemove>
                                 </Buttons>
                         )}
-                </>
+                </> */}
+                <Buttons>
+                    <DiaryUpdate>
+                        수정<FontAwesomeIcon icon={faPencil} />
+                    </DiaryUpdate>
+                    <DiaryRemove onClick={handleRemove}>
+                        삭제<FontAwesomeIcon icon={faEraser} />
+                    </DiaryRemove>
+                </Buttons>
             </Info>
         </DiaryItems>
     )

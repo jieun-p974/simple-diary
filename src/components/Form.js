@@ -15,7 +15,7 @@ const EmotionSelect = styled.select`
         border-color: red;
     }
 `
-const InputeField = styled.input`
+const TextContent = styled.textarea`
     flex: 1;
     font-size: 1.25rem;
     outline: none;
@@ -59,7 +59,7 @@ const Form = ({onCreate}) => {
         alert("저장성공");
         setState({
             content: "",
-            emotion: "😀"
+            emotion: "😀",
         });
     }
     return(
@@ -75,7 +75,7 @@ const Form = ({onCreate}) => {
                 <option value={"😢"}>😢</option>
                 <option value={"😠"}>😠</option>
             </EmotionSelect>
-            <InputeField 
+            <TextContent 
                 ref = {contentInput}
                 name='content'
                 value={state.content} 
