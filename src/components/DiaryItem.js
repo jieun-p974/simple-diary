@@ -45,11 +45,16 @@ const Text = styled.div`
     border-top: solid 1px #e3c565;
     word-break: break-all; /* 글자단위로 자름 */
 `
+const InputArea = styled.textarea`
+    width: 100%;
+    font-size: 20px;
+`
+
 const DiaryItem = ({onUpdate, onDelete, content, created_date, emotion, id}) =>{
-    // const [isUpdate, setIsUpdate] = useState(false); //초기값 false
-    // const toggle = () => setIsUpdate(!isUpdate);
-    // const [localContent, setLocalContent] = useState(content); // 기존의 content 값을 초기값으로
-    // const localContentInput = useRef();
+    const [updated, setUpdated] = useState(false);
+    const toggle = () => setUpdated(!updated); // update 버튼 눌렀는지 아닌지 확인
+    const [localContent, setLocalContent] = useState(content);
+    const localContentInput = useRef();
 
     // 삭제 함수
     const handleRemove = () => {
@@ -57,19 +62,22 @@ const DiaryItem = ({onUpdate, onDelete, content, created_date, emotion, id}) =>{
             onDelete(id);
         }
     }
-    // 수정함수
-    // const handleUpdate = () => {
-    //     if (localContent.length < 2){
-    //         // 수정하는 글 길이가 짧으면 다시 포커스
-    //         localContentInput.current.focuse();
-    //         alert("일기 내용이 너무 짧아요!");
-    //         return;
-    //     }
-    //     if (window.confirm(`{id + 1}번째 일기를 수정하시겠습니까?`)){
-    //         onUpdate(id, localContent);
-    //         toggle();
-    //     }
-    // };
+
+    const handleQuitUpdated = () => {
+        // 수정 취소하면 setUpdated를 false로하고 원래 값 그대로 넣어서 출력
+        setUpdated(false);
+        setLocalContent(content);
+    }
+    
+    const handleUpdate = () => {
+        // 수정확인 받고 내용 업데이트
+       if(window.confirm(`${id+1}번째 일기를 수정하겠습니까?`)){
+           onUpdate(id, localContent);
+           toggle();
+       }
+    }
+
+
     return(
         <DiaryItems>
             <Info>
@@ -81,73 +89,39 @@ const DiaryItem = ({onUpdate, onDelete, content, created_date, emotion, id}) =>{
                     기분 : {emotion}
                 </span>
                 <br/>
-                <Text>
-                    {/* 수정 모드인지 아닌지 */}
-                    {/* {isUpdate?(
-                        // 수정모드
-                        <textarea>
-                            ref={localContentInput}
-                            value={localContent}
-                            onChange={(e)=>setLocalContent(e.target.value)}
-                        </textarea>
-                    ):(
-                        // 읽기모드
-                        {content}
-                    )} */}
-                    {content}
-                </Text>
-                <br/>
-                {/* <>
-                    {isUpdate?(
-                                <Buttons>
-                                    <button onClick={handleUpdate}>
-                                        수정완료<FontAwesomeIcon icon={faPencil} />
-                                    </button>
-                                </Buttons>
-                            ):(
-                                // 수정/삭제 버튼 보이게
-                                <Buttons>
-                                    <DiaryUpdate onClick={toggle}>
-                                        수정<FontAwesomeIcon icon={faPencil} />
-                                    </DiaryUpdate>
-                                    <DiaryRemove onClick={handleRemove}>
-                                        삭제<FontAwesomeIcon icon={faEraser} />
-                                    </DiaryRemove>
-                                </Buttons>
+                {updated?(
+                        <Text>
+                            <InputArea 
+                                value={localContent}
+                                onChange={(e)=>setLocalContent(e.target.value)}>
+                            </InputArea>
+                        </Text>
+                        ):(
+                        <Text>
+                            {content}
+                        </Text>
                         )}
-                </> */}
-                <Buttons>
-                    <DiaryUpdate>
+                <br/>
+                {updated?(
+                    <Buttons>
+                        <button onClick={handleUpdate}>수정 완료👌</button>
+                        <button onClick={handleQuitUpdated}>수정 취소</button>
+                    </Buttons>
+                    
+                ):(
+                    <Buttons>
+                    <DiaryUpdate onClick={toggle}>
                         수정<FontAwesomeIcon icon={faPencil} />
                     </DiaryUpdate>
                     <DiaryRemove onClick={handleRemove}>
                         삭제<FontAwesomeIcon icon={faEraser} />
                     </DiaryRemove>
                 </Buttons>
+                )}
             </Info>
         </DiaryItems>
     )
 }
 
-// class DiaryItem extends Component{
-//     render(){
-//         // text: 일기내용
-//         // id : 일기 고유 아이디
-//         // onRemove : 아이템을 삭제시키는 함수
-//         const { text, chekced, onTaggle, id, onRemove } = this.props;
-//         return(
-//             <DiaryItems onClick={()=> onTaggle(id)}>
-//                 <Text>{text}</Text>
-//                 <DiaryRemove onClick={(e)=>{
-//                     //해당 이벤트가 부모 이벤트까지 전달되지 않도록 해줌
-//                     e.stopPropagation(); 
-//                     onRemove(id)
-//                 }}>
-//                     <FontAwesomeIcon icon={faEraser} size="2x" className="eraser" />
-//                 </DiaryRemove>
-//             </DiaryItems>
-//         );
-//     }
-// }
 
 export default DiaryItem;
