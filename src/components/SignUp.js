@@ -1,95 +1,26 @@
 import { useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
 import { auth } from "../Firebase-config";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const SignUp = () => {
-  //회원가입 상태 변수
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
+  const [userData, setUserData] = useState(null);
 
-  //로그인 상태 변수
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [user, setUser] = useState({});
-
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
-
-  //회원 가입
-  const register = async () => {
-    try {
-      const user = await createUserWithEmailAndPassword(
-        auth,
-        registerEmail,
-        registerPassword
-      );
-      console.log(user);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  // 로그인
-  const login = async () => {
-    try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        loginEmail,
-        loginPassword
-      );
-      console.log(user);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  // 로그아웃
-  const logout = async () => {
-    await signOut(auth);
-  };
+  function handleGoogleLogin() {
+    const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+    signInWithPopup(auth, provider) // popup을 이용한 signup
+      .then((data) => {
+        setUserData(data.user); // user data 설정
+        console.log(data); // console로 들어온 데이터 표시
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
     <div>
-      <div className="signUp">
-        <input
-          placeholder="Email"
-          onChange={(e) => {
-            setRegisterEmail(e.target.value);
-          }}
-        />
-        <input
-          placeholder="EmailPassword"
-          onChange={(e) => {
-            setRegisterPassword(e.target.value);
-          }}
-        />
-        <button onClick={register}>CreateUser</button>
-      </div>
-      <div className="logIn">
-        <h3>Login</h3>
-        <input
-          placeholder="Email"
-          onChange={(e) => {
-            setLoginEmail(e.target.value);
-          }}
-        />
-        <input
-          placeholder="Password"
-          onChange={(e) => {
-            setLoginPassword(e.target.value);
-          }}
-        />
-        <button onClick={login}>Login</button>
-        <div>User Logged In: </div>
-        <div>{user?.email}</div>
-        <button onClick={logout}>log out</button>
-      </div>
+      <button onClick={handleGoogleLogin}>Login</button>
+      {userData ? userData.displayName : null}
     </div>
   );
 };

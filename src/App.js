@@ -1,11 +1,23 @@
-import React, { useRef, useState } from "react";
+import Login from "./pages/login/Login";
+import Home from "./pages/home/Home";
+import React, { useContext, useRef, useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
+import { AuthContext } from "./context/AuthContext";
+
 // import DiaryList from "./components/DiaryList";
 // import DiaryTemplate from "./components/DiaryTemplate";
 // import Form from "./components/Form";
-import SignUp from "./components/SignUp";
 
 const App = () => {
+  // 최근 로그인한 사용자 정보확인하고 없으면 login페이지로
+  const { currentUser } = useContext(AuthContext);
+
+  const RequireAuth = ({ children }) => {
+    return currentUser ? children : <Navigate to="/login" />;
+  };
+  console.log(currentUser);
+
   // const [data, setData] = useState([]);
   // const dateId = useRef(0);
 
@@ -44,7 +56,21 @@ const App = () => {
 
   return (
     <div className="App">
-      <SignUp />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+            <Route path="login" element={<Login />} />
+            <Route
+              path="home"
+              element={
+                <RequireAuth>
+                  <Home />
+                </RequireAuth>
+              }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
       {/* <DiaryTemplate form={<Form onCreate={onCreate} />}>
         <DiaryList diarys={data} onDelete={onDelete} onUpdate={onUpdate} />
       </DiaryTemplate> */}
